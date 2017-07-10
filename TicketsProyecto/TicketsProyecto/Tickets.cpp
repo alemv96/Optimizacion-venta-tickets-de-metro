@@ -21,12 +21,18 @@ void User_Menu() {
 		printf("----> pulse 3 para salir del sistema \n");
 		scanf("%i", &option);
 
-		if (option == 1) ID_Entry();
-		else if (option == 2) mostrar(turnos);
-		else {
+		if (option == 1) {
+			ID_Entry();
+		}
+		else if (option == 2) {
+			mostrar(turnos);
+		}
+		else if(option == 3) {
 			system("cls");
 			printf("Hasta luego\n");
+			eliminar(&turnos);
 			system("pause");
+
 		}
 	} while ((option == 1) || (option == 2));
 }
@@ -42,45 +48,46 @@ void ID_Entry() {
 
 void Get_Divided_ID(int id) {
 	/*while id != 0*/
+	int ci = id;
 	int turno = 0;
-	int residue = 0 , exitCycle = 0;
+	int residue = 0, exitCycle = 0;
 	int result = 0;
 	//int num = id;
-	
-	/*while (num != 0) {	
-		for (int i = 0; i != 3; i++) {
-			if (num != 0) {
-				int n = num % 10;
-				num = num / 10;
-				result = (result * 10) + n;
-			}
-		}
-		turno += result;
-		result = 0;
+
+	/*while (num != 0) {
+	for (int i = 0; i != 3; i++) {
+	if (num != 0) {
+	int n = num % 10;
+	num = num / 10;
+	result = (result * 10) + n;
 	}
-*/
+	}
+	turno += result;
+	result = 0;
+	}
+	*/
 	__asm {
-		For_Cycle:
-			MOV eax, exitCycle
+	For_Cycle:
+		MOV eax, exitCycle
 			CMP eax, 3
 			JA Inner_For
 			CMP eax, 3
-			JE While_Cycle			
-		
-		Inner_For:
-			MOV eax, id
+			JE While_Cycle
+
+			Inner_For :
+		MOV eax, id
 			CMP eax, 0
 			JNE Get_Result
 			CMP eax, 0
 			JE While_Cycle
 
-		Get_Result:
-			MOV eax, id 
+			Get_Result :
+		MOV eax, id
 			MOV ecx, 10
 			DIV ecx
 			MOV residue, edx
 			MOV id, eax
-			
+
 			MOV eax, result
 			MUL ecx
 			ADD eax, residue
@@ -91,11 +98,11 @@ void Get_Divided_ID(int id) {
 			MOV exitCycle, eax
 			JMP For_Cycle
 
-		While_Cycle:
-			MOV eax, turno
+			While_Cycle :
+		MOV eax, turno
 			MOV ebx, result
 			ADD eax, ebx
-			;MOV ebx, 0
+			; MOV ebx, 0
 			MOV turno, eax
 			MOV result, 0
 			MOV exitCycle, 0
@@ -104,11 +111,11 @@ void Get_Divided_ID(int id) {
 			JNE For_Cycle
 
 	}
-		
-	insertar(&turnos, turno);
+
+	insertar(&turnos, turno, ci);
 	printf("Cedula a~adida con exito al sistema");
 	system("pause");
-	
+
 }
 
 void main()
